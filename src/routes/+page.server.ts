@@ -85,7 +85,7 @@ export const actions = {
 			studentImail = `${studentImail}@${imailSuffix}`;
 		}
 
-		// TODO: generate invite link
+		// Generate invite link
 		const invite = await generateInvite(30);
 		console.log(invite);
 		console.log(invite.url);
