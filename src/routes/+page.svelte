@@ -139,6 +139,11 @@
 		background-color: hsl(var(--blurpleHS), 60%);
 	}
 
+	/* Add blurple outline to button */
+	.requester .requester__form button:focus {
+		outline: solid 0.2rem hsl(var(--blurpleHS), 60%);
+	}
+
 	/* Style the input box and button to fill the form width and round their corners with some spacing */
 	.requester .requester__form .requester__form__input input[type='text'],
 	.requester .requester__form button {
