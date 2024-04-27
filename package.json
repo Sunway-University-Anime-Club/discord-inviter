@@ -36,6 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/supabase-js": "^2.42.7",
+		"discord.js": "^14.14.1",
 		"drizzle-orm": "^0.30.9",
 		"googleapis": "^135.0.0",
 		"postgres": "^3.4.4"
