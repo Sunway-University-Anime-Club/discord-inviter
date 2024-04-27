@@ -79,10 +79,7 @@
 		vertical-align: middle;
 	}
 
-	.requester .requester__form h1 {
-		margin-bottom: 1rem;
-	}
-
+	.requester .requester__form h1,
 	.requester .requester__form .requester__form__input {
 		margin-bottom: 1rem;
 	}
@@ -115,10 +112,6 @@
 	.requester .requester__form .requester__form__input input[type='text']:focus {
 		outline: solid 0.2rem orange;
 		background-color: hsl(31, 100%, 45%);
-	}
-
-	.requester .requester__form .requester__form__input input[type='text']:focus::placeholder {
-		opacity: 0;
 	}
 
 	.requester .requester__form button {
