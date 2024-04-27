@@ -3,7 +3,6 @@
 </script>
 
 <main>
-	<div class="toast-wrapper"></div>
 	<SvelteToast
 		options={{
 			duration: 5000,
@@ -21,5 +20,6 @@
 <style>
 	main {
 		font-family: Arial, Helvetica, sans-serif;
+		--toastWidth: 100%;
 	}
 </style>
