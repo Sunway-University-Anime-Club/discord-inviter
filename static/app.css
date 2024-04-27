@@ -35,6 +35,12 @@ body {
 	min-height: 100vh;
 	text-rendering: optimizeSpeed;
 	line-height: 1.5;
+
+	/* Set custom properties for colours */
+	--primary-clr: hsl(31, 100%, 45%);
+	--secondary-clr: hsl(40, 100%, 50%);
+	--neutralHS: 0, 0%;
+	--blurpleHS: 227, 58%;
 }
 
 /* A elements that don't have a class get default styles */

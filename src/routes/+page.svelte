@@ -45,13 +45,13 @@
 	/* Set the background to fill the screen with an orange gradient */
 	.requester {
 		min-height: 100dvh;
-		background: linear-gradient(330deg, hsl(31, 100%, 39%) 35%, hsl(40, 100%, 50%) 100%);
+		background: linear-gradient(330deg, var(--primary-clr) 35%, var(--secondary-clr) 100%);
 	}
 
 	/* Play the keyframe animation for the form on render */
 	.requester .requester__form {
 		flex-direction: column;
-		background: white;
+		background: hsl(var(--neutralHS), 100%);
 		padding: 2rem;
 		border-radius: 0.5rem;
 		animation: 0.8s ease-in-out 0s 1 flyIn;
@@ -94,7 +94,7 @@
 
 	/* Position the label to act as the input placeholder */
 	.requester .requester__form .requester__form__input label {
-		color: hsla(0, 0%, 100%, 0.7);
+		color: hsla(var(--neutralHS), 100%, 0.7);
 		cursor: text;
 		display: inline-block;
 		transform: translate(7.5%, 135%);
@@ -107,36 +107,36 @@
 		.requester__form
 		.requester__form__input
 		label:has(+ input[type='text']:not(:placeholder-shown)) {
-		color: grey;
+		color: hsl(var(--neutralHS), 50%);
 		cursor: default;
 		transform: translate(0);
 	}
 
 	/* Set background of input box to have an orange gradient */
 	.requester .requester__form .requester__form__input input[type='text'] {
-		background: hsl(31, 100%, 45%);
-		background: linear-gradient(170deg, hsl(31, 100%, 45%) 35%, transparent 100%);
-		background-color: hsl(40, 100%, 50%);
+		background: var(--primary-clr);
+		background: linear-gradient(170deg, var(--primary-clr) 35%, transparent 100%);
+		background-color: var(--secondary-clr);
 		transition: background-color 300ms ease-in-out;
 	}
 
 	/* Add an orange outline and fill with dark orange background when user is typing for better readability */
 	.requester .requester__form .requester__form__input input[type='text']:focus {
-		outline: solid 0.2rem orange;
-		background-color: hsl(31, 100%, 45%);
+		outline: solid 0.2rem var(--secondary-clr);
+		background-color: var(--primary-clr);
 	}
 
 	/* Change colour of button to a blurple colour like Discord */
 	.requester .requester__form button {
 		cursor: pointer;
-		background-color: hsl(227, 58%, 65%);
+		background-color: hsl(var(--blurpleHS), 65%);
 		transition: background-color 100ms ease-in-out;
-		color: white;
+		color: hsl(var(--neutralHS), 100%);
 	}
 
 	/* Change colour of button when hovering to let user know they are on the button */
 	.requester .requester__form button:hover {
-		background-color: hsl(227, 58%, 60%);
+		background-color: hsl(var(--blurpleHS), 60%);
 	}
 
 	/* Style the input box and button to fill the form width and round their corners with some spacing */
@@ -146,6 +146,6 @@
 		border-radius: 0.2rem;
 		width: 100%;
 		padding: 0.5rem 1rem;
-		color: white;
+		color: hsl(var(--neutralHS), 100%);
 	}
 </style>
