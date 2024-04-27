@@ -1,17 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { toast } from '@zerodevx/svelte-toast';
+	import type { SubmitFunction } from './$types';
 
-	export let form;
-	$: {
-		if (form?.studentId) {
-			toast.push(form.studentId);
-		}
-	}
+	const submitter: SubmitFunction = async ({}) => {
+		return async ({ result, update }) => {
+			if (result.type === 'success' && result.data?.valid) {
+				toast.push(result.data!.studentImail!);
+			}
+			update();
+		};
+	};
 </script>
 
 <section class="requester">
-	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance>
+	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance={submitter}>
 		<div class="requester__form__logos">
 			<img src="/logos/suac.webp" alt="suac logo" />
 			<span>&times;</span>
@@ -27,6 +30,8 @@
 
 		<button type="submit">Request Invite</button>
 	</form>
+
+	<!-- TODO: Add noscript tag to check if form submission was successful -->
 </section>
 
 <style>
