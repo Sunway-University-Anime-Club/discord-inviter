@@ -6,7 +6,7 @@
 	export let form;
 
 	const submitter: SubmitFunction = async ({}) => {
-		// The toast to let user their request is being processed
+		// The toast to let user know their request is being processed
 		const loaderToast = toast.push('Processing...', {
 			initial: 0,
 			next: 0,
