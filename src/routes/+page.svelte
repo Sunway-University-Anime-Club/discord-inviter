@@ -50,7 +50,7 @@
 <section class="requester">
 	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance={submitter}>
 		<div class="requester__form__logos">
-			<img src="/logos/suac.webp" alt="suac logo" />
+			<img src="/logos/suac.png" alt="suac logo" />
 			<span>&times;</span>
 			<img src="/logos/discord.png" alt="discord logo" />
 		</div>
