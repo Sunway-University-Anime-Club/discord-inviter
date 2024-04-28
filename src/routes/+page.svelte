@@ -1,19 +1,56 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { toast } from '@zerodevx/svelte-toast';
+	import type { SubmitFunction } from './$types';
 
 	export let form;
-	$: {
-		if (form?.studentId) {
-			toast.push(form.studentId);
-		}
-	}
+
+	const submitter: SubmitFunction = async ({}) => {
+		// The toast to let user know their request is being processed
+		const loaderToast = toast.push('Processing...', {
+			initial: 0,
+			next: 0,
+			// When the loader toast is removed, show a new toast with the response message
+			onpop: () => {
+				toast.push(form!.message, {
+					theme: {
+						'--toastBarBackground': form!.valid ? 'orange' : 'red'
+					}
+				});
+			}
+		});
+
+		// Progress bar of the toast
+		let progress = 0;
+
+		// Update the progress bar on the toast by a random amount every 300ms
+		const randomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
+		const interval = setInterval(() => {
+			progress += randomNumber(0.05, 0.1);
+			toast.set(loaderToast, { next: progress });
+		}, 300);
+
+		// Get response from form action
+		return async ({ result, update }) => {
+			clearInterval(interval);
+			if (result.type === 'success') {
+				// Set the progress bar to full when response is returned from form action
+				toast.set(loaderToast, { next: 10 });
+
+				// For visual consistency, remove the loader toast after 300ms
+				setTimeout(() => toast.pop(loaderToast), 300);
+			}
+
+			// Reset the form
+			update();
+		};
+	};
 </script>
 
 <section class="requester">
-	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance>
+	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance={submitter}>
 		<div class="requester__form__logos">
-			<img src="/logos/suac.webp" alt="suac logo" />
+			<img src="/logos/suac.png" alt="suac logo" />
 			<span>&times;</span>
 			<img src="/logos/discord.png" alt="discord logo" />
 		</div>
@@ -27,6 +64,8 @@
 
 		<button type="submit">Request Invite</button>
 	</form>
+
+	<!-- TODO: Add noscript tag to check if form submission was successful -->
 </section>
 
 <style>
@@ -53,6 +92,7 @@
 		flex-direction: column;
 		background: hsl(var(--neutralHS), 100%);
 		padding: 2rem;
+		margin: 1rem;
 		border-radius: 0.5rem;
 		animation: 0.8s ease-in-out 0s 1 flyIn;
 	}
