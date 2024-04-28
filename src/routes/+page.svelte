@@ -6,7 +6,7 @@
 	const submitter: SubmitFunction = async ({}) => {
 		return async ({ result, update }) => {
 			if (result.type === 'success' && result.data?.valid) {
-				toast.push(result.data!.studentImail!);
+				toast.push('You have successfully requested an invited. Check your imail.');
 			}
 			update();
 		};
