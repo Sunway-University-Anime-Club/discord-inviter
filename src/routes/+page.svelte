@@ -92,6 +92,7 @@
 		flex-direction: column;
 		background: hsl(var(--neutralHS), 100%);
 		padding: 2rem;
+		margin: 1rem;
 		border-radius: 0.5rem;
 		animation: 0.8s ease-in-out 0s 1 flyIn;
 	}
