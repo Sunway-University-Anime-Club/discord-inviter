@@ -41,8 +41,8 @@ const isRegistered = async (studentId: string): Promise<boolean> => {
 		if (String(row[0]).trim() === studentId) return true;
 	}
 
-	// !TEMP: to check with my own student id
-	if ([env.TEST_STUDENT_ID].includes(studentId)) return true;
+	// Allow certain student ids through
+	if (env.ALLOWED_IDS.split(',').includes(studentId)) return true;
 
 	return false;
 };
