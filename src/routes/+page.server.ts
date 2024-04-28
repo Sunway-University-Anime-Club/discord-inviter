@@ -1,5 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { discordClient } from '$lib/server/discord';
+import { emailClient } from '$lib/server/email';
 import { googleClient, service } from '$lib/server/google';
 import type { Invite } from 'discord.js';
 import type { Actions } from './$types';
@@ -38,6 +39,9 @@ const isRegistered = async (studentId: string): Promise<boolean> => {
 	for (const row of rows) {
 		if (String(row[0]).trim() === studentId) return true;
 	}
+
+	// !TEMP: to check with my own student id
+	if ([env.TEST_STUDENT_ID].includes(studentId)) return true;
 
 	return false;
 };
@@ -91,6 +95,36 @@ export const actions = {
 		console.log(invite.url);
 
 		// TODO: send invite link to imail
+		console.log(studentImail);
+		const res = await emailClient.sendMail({
+			to: [studentImail],
+			from: `Sunway University Anime Club - <${env.EMAIL_USER}>`,
+			subject: 'SUAC: Discord Invite Request',
+			html: `
+        <p>
+          Dear SUAC Member,
+          
+					</br>
+          </br>
+          
+					You have requested for an invite to the Discord server. Click the button below to join the Discord server. You may use this link if the button does not work: <a class="btn" href="${invite.url}">${invite.url}</a>
+        
+          </br>
+          </br>
+
+          <a class="btn" href="${invite.url}">Join SUAC Discord</a>
+        </p>
+
+				<style>
+						.btn {
+							padding: 1rem;
+							background: orange;
+							border-radius: 0.2rem;
+						}
+				</style>
+      `
+		});
+		console.log(res);
 
 		return { studentId, studentImail, valid: true };
 	}
