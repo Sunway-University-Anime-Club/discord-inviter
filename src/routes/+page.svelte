@@ -3,15 +3,45 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { SubmitFunction } from './$types';
 
+	export let form;
+
 	const submitter: SubmitFunction = async ({}) => {
-		return async ({ result, update }) => {
-			if (result.type === 'success') {
-				toast.push(result.data!.message, {
+		// The toast to let user their request is being processed
+		const loaderToast = toast.push('Processing...', {
+			initial: 0,
+			next: 0,
+			// When the loader toast is removed, show a new toast with the response message
+			onpop: () => {
+				toast.push(form!.message, {
 					theme: {
-						'--toastBarBackground': result.data?.valid ? 'orange' : 'red'
+						'--toastBarBackground': form!.valid ? 'orange' : 'red'
 					}
 				});
 			}
+		});
+
+		// Progress bar of the toast
+		let progress = 0;
+
+		// Update the progress bar on the toast by a random amount every 300ms
+		const randomNumber = (min: number, max: number) => Math.random() * (max - min) + min;
+		const interval = setInterval(() => {
+			progress += randomNumber(0.05, 0.1);
+			toast.set(loaderToast, { next: progress });
+		}, 300);
+
+		// Get response from form action
+		return async ({ result, update }) => {
+			clearInterval(interval);
+			if (result.type === 'success') {
+				// Set the progress bar to full when response is returned from form action
+				toast.set(loaderToast, { next: 10 });
+
+				// For visual consistency, remove the loader toast after 300ms
+				setTimeout(() => toast.pop(loaderToast), 300);
+			}
+
+			// Reset the form
 			update();
 		};
 	};
