@@ -5,8 +5,12 @@
 
 	const submitter: SubmitFunction = async ({}) => {
 		return async ({ result, update }) => {
-			if (result.type === 'success' && result.data?.valid) {
-				toast.push('You have successfully requested an invited. Check your imail.');
+			if (result.type === 'success') {
+				toast.push(result.data!.message, {
+					theme: {
+						'--toastBarBackground': result.data?.valid ? 'orange' : 'red'
+					}
+				});
 			}
 			update();
 		};
