@@ -1,14 +1,15 @@
 import { env } from '$env/dynamic/private';
+import Email from '$lib/components/email.svelte';
 import { discordClient } from '$lib/server/discord';
 import { emailClient } from '$lib/server/email';
 import { googleClient, service } from '$lib/server/google';
 import type { Invite } from 'discord.js';
+import { render } from 'svelte-email';
 import type { Actions } from './$types';
 
 interface FormResponse {
-	studentId: string;
 	valid: boolean;
-	studentImail?: string;
+	message: string;
 }
 
 const imailSuffix = 'imail.sunway.edu.my';
@@ -74,13 +75,17 @@ export const actions = {
 		// Check if the input was a valid student id or imail
 		const validRegex = /^\d{8}(@imail\.sunway\.edu\.my)?$/gi;
 		if (!validRegex.test(studentId)) {
-			return { studentId, valid: false };
+			return { valid: false, message: 'An invalid Student ID or Imail has been provided.' };
 		}
 
 		// Check if user has registered
 		// The split is to ensure that only the student id is selected if imail was provided
 		if (!(await isRegistered(studentId.split('@')[0]))) {
-			return { studentId, valid: false };
+			return {
+				valid: false,
+				message:
+					'Registration not found. Register first or reach out for help if you think this was a mistake.'
+			};
 		}
 
 		// Get the imail of the student using the student id
@@ -91,41 +96,26 @@ export const actions = {
 
 		// Generate invite link
 		const invite = await generateInvite(30);
-		console.log(invite);
-		console.log(invite.url);
 
-		// TODO: send invite link to imail
-		console.log(studentImail);
-		const res = await emailClient.sendMail({
-			to: [studentImail],
-			from: `Sunway University Anime Club - <${env.EMAIL_USER}>`,
-			subject: 'SUAC: Discord Invite Request',
-			html: `
-        <p>
-          Dear SUAC Member,
-          
-					</br>
-          </br>
-          
-					You have requested for an invite to the Discord server. Click the button below to join the Discord server. You may use this link if the button does not work: <a class="btn" href="${invite.url}">${invite.url}</a>
-        
-          </br>
-          </br>
-
-          <a class="btn" href="${invite.url}">Join SUAC Discord</a>
-        </p>
-
-				<style>
-						.btn {
-							padding: 1rem;
-							background: orange;
-							border-radius: 0.2rem;
-						}
-				</style>
-      `
+		// Render the email template with the appropriate data
+		const html = render({
+			template: Email,
+			props: {
+				invite: invite.url
+			}
 		});
-		console.log(res);
 
-		return { studentId, studentImail, valid: true };
+		// Send the email the the student imail
+		await emailClient.sendMail({
+			to: [studentImail],
+			from: `Sunway University Anime Club <${env.EMAIL_USER}>`,
+			subject: 'SUAC: Discord Invite Request',
+			html
+		});
+
+		return {
+			valid: true,
+			message: 'You have successfully requested an invited. Check your imail.'
+		};
 	}
 } satisfies Actions;
