@@ -216,16 +216,18 @@
 	.requester .requester__footer {
 		position: absolute;
 		bottom: 0;
-		top: calc(100dvh - 2rem);
+		top: calc(100dvh - 5rem);
 		color: hsla(var(--neutralHS), 100%);
 		filter: drop-shadow(3px 3px 4px hsla(0, 0%, 0%, 0.5));
+		margin: 0 1rem;
+		text-align: center;
 	}
 
 	/* Position the noscript to be at the bottom of the page at all time */
 	noscript {
 		position: fixed;
 		bottom: 0;
-		top: calc(100dvh - 7.5rem);
+		top: calc(100dvh - 10rem);
 		color: hsl(var(--neutralHS), 100%);
 	}
 
