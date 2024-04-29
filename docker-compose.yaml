@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     env_file:
-      - .env.local
+      - .env
     environment:
       - PORT=4000
       - NODE_ENV=production
