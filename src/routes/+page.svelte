@@ -49,13 +49,14 @@
 
 <section class="requester">
 	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance={submitter}>
-		<div class="requester__form__logos">
-			<img src="/logos/suac.png" alt="suac logo" />
-			<span>&times;</span>
-			<img src="/logos/discord.png" alt="discord logo" />
-		</div>
-
-		<h1>SUAC Discord Inviter</h1>
+		<header class="requester__form__header">
+			<div class="requester__form__header__logos">
+				<img src="/logos/suac.png" alt="suac logo" />
+				<span>&times;</span>
+				<img src="/logos/discord.png" alt="discord logo" />
+			</div>
+			<h1>SUAC Discord Inviter</h1>
+		</header>
 
 		<div class="requester__form__input">
 			<label for="student_id">Student ID or Imail</label>
@@ -113,22 +114,22 @@
 	}
 
 	/* Set the logo size */
-	.requester .requester__form .requester__form__logos img {
+	.requester .requester__form .requester__form__header__logos img {
 		height: auto;
 		width: 5rem;
 		display: inline-block;
 	}
 
 	/* Set the '×' size */
-	.requester .requester__form .requester__form__logos span {
+	.requester .requester__form .requester__form__header__logos span {
 		margin-inline: 1.5rem;
 		font-size: 3rem;
 		font-weight: lighter;
 	}
 
 	/* Align the logos to be centered with each other */
-	.requester .requester__form .requester__form__logos img,
-	.requester .requester__form .requester__form__logos span {
+	.requester .requester__form .requester__form__header__logos img,
+	.requester .requester__form .requester__form__header__logos span {
 		vertical-align: middle;
 	}
 
