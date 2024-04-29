@@ -5,7 +5,7 @@ import { emailClient } from '$lib/server/email';
 import { googleClient, service } from '$lib/server/google';
 import type { Invite } from 'discord.js';
 import { render } from 'svelte-email';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 interface FormResponse {
 	valid: boolean;
@@ -72,6 +72,11 @@ const generateInvite = async (minutes: number): Promise<Invite> => {
 		maxAge: minutes * 60, // convert to seconds
 		reason: 'User request'
 	});
+};
+
+export const load: PageServerLoad = async () => {
+	// Dynamically generate the year for copyright
+	return { year: new Date().getFullYear() };
 };
 
 export const actions = {
