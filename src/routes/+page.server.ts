@@ -123,7 +123,7 @@ export const actions = {
 		await emailClient.sendMail({
 			to: [studentImail],
 			from: `Sunway University Anime Club <${env.EMAIL_USER}>`,
-			subject: 'SUAC: Discord Invite Request',
+			subject: 'Discord Invite Request',
 			html
 		});
 
