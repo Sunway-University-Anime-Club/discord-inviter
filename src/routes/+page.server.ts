@@ -22,19 +22,27 @@ const imailSuffix = 'imail.sunway.edu.my';
  * @return {*}  {Promise<boolean>}
  */
 const isRegistered = async (studentId: string): Promise<boolean> => {
-	// Fetch responses from the spreadsheet
-	const response = await service.spreadsheets.values.get({
-		auth: googleClient,
-		spreadsheetId: env.REGISTRATION_FORM_ID,
-		range: 'C:C' // C is the column for student id
-	});
+	const rows: unknown[][] = [];
 
-	// Check if fetch request was successful
-	if (response.status !== 200) return false;
+	// Fetch every registered Student IDs in the list of provided Spreadsheet IDs
+	for (const spreadsheetId of env.REGISTRATION_FORM_IDS.split(',')) {
+		// Fetch responses from the spreadsheet
+		const response = await service.spreadsheets.values.get({
+			auth: googleClient,
+			spreadsheetId,
+			range: 'C:C' // C is the column for student id
+		});
 
-	// Check if there are responses in the spreadsheet
-	const rows = response.data.values;
-	if (!rows?.length) return false;
+		// Check if fetch request was successful
+		if (response.status !== 200) continue;
+
+		// Check if the response has found any data
+		const spreadsheetRow = response.data.values;
+		if (!spreadsheetRow?.length) continue;
+
+		// Push the responses into a global list of rows
+		rows.push(...spreadsheetRow);
+	}
 
 	// Look if there is a match
 	for (const row of rows) {
