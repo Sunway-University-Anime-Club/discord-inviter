@@ -3,6 +3,7 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import type { SubmitFunction } from './$types';
 
+	export let data;
 	export let form;
 
 	const submitter: SubmitFunction = async ({}) => {
@@ -74,7 +75,7 @@
 	</form>
 
 	<footer class="requester__footer">
-		Copyright &copy; 2024 Sunway University Anime Club. All rights reserved.
+		Copyright &copy; {data.year} Sunway University Anime Club. All rights reserved.
 	</footer>
 
 	<!-- Let user know if form submission was successful if JavaScript is disabled -->
