@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { Button, Heading, Html, Img, Link, Text } from 'svelte-email';
+	import { Button, Heading, Html, Img, Link, Preview, Text } from 'svelte-email';
 
 	export let invite: string;
 	export let logo: string;
 
 	const fontFamily = 'Arial, Helvetica, sans-serif';
 </script>
+
+<Preview preview="You have requested a Discord Invite Link" />
 
 <Html lang="en">
 	<Text style={{ fontFamily }}>Dear SUAC Member,</Text>
