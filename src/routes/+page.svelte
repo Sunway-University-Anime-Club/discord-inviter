@@ -73,6 +73,10 @@
 		<button type="submit">Request Invite</button>
 	</form>
 
+	<footer class="requester__footer">
+		Copyright &copy; 2024 Sunway University Anime Club. All rights reserved.
+	</footer>
+
 	<!-- Let user know if form submission was successful if JavaScript is disabled -->
 	{#if form}
 		<noscript>
@@ -206,6 +210,14 @@
 		width: 100%;
 		padding: 0.5rem 1rem;
 		color: hsl(var(--neutralHS), 100%);
+	}
+
+	.requester .requester__footer {
+		position: absolute;
+		bottom: 0;
+		top: calc(100dvh - 2rem);
+		color: hsla(var(--neutralHS), 100%);
+		filter: drop-shadow(3px 3px 4px hsla(0, 0%, 0%, 0.5));
 	}
 
 	/* Position the noscript to be at the bottom of the page at all time */
