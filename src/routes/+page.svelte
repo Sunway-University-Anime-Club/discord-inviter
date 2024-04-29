@@ -49,15 +49,22 @@
 
 <section class="requester">
 	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance={submitter}>
+		<!-- The header of the form including logos and title -->
 		<header class="requester__form__header">
+			<!-- The division containing the logos -->
 			<div class="requester__form__header__logos">
 				<img src="/logos/suac.png" alt="suac logo" />
+
+				<!-- Multiplication symbol -->
 				<span>&times;</span>
+
 				<img src="/logos/discord.png" alt="discord logo" />
 			</div>
+
 			<h1>SUAC Discord Inviter</h1>
 		</header>
 
+		<!-- The input for Student ID or imail -->
 		<div class="requester__form__input">
 			<label for="student_id">Student ID or Imail</label>
 			<input type="text" name="student_id" id="student_id" placeholder="" />
