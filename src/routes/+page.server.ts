@@ -67,7 +67,10 @@ const generateInvite = async (minutes: number): Promise<Invite> => {
 };
 
 export const actions = {
-	inviteRequest: async ({ request }): Promise<FormResponse> => {
+	inviteRequest: async ({ request, cookies }): Promise<FormResponse> => {
+		const cooldownCookie = cookies.get('cooldown');
+		if (cooldownCookie) return { valid: false, message: 'Invitation request is on cooldown.' };
+
 		// Get the user input from the form submission
 		const formData = await request.formData();
 		const studentId = formData.get('student_id')?.toString() || '';
@@ -111,6 +114,13 @@ export const actions = {
 			from: `Sunway University Anime Club <${env.EMAIL_USER}>`,
 			subject: 'SUAC: Discord Invite Request',
 			html
+		});
+
+		cookies.set('cooldown', 'requested', {
+			httpOnly: true,
+			path: '/',
+			maxAge: 10 * 60,
+			secure: false
 		});
 
 		return {
