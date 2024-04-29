@@ -107,7 +107,7 @@ export const actions = {
 			template: Email,
 			props: {
 				invite: invite.url,
-				logo: `${url.origin}/logo/suac-large.png`
+				logo: `${url.origin}/logos/suac-large.png`
 			}
 		});
 
