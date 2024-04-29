@@ -1,0 +1,14 @@
+name: suac-discord-requester
+
+services:
+  suac-discord-requester:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+    ports:
+      - 4000:4000

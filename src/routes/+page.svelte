@@ -49,14 +49,22 @@
 
 <section class="requester">
 	<form class="requester__form" action="?/inviteRequest" method="POST" use:enhance={submitter}>
-		<div class="requester__form__logos">
-			<img src="/logos/suac.png" alt="suac logo" />
-			<span>&times;</span>
-			<img src="/logos/discord.png" alt="discord logo" />
-		</div>
+		<!-- The header of the form including logos and title -->
+		<header class="requester__form__header">
+			<!-- The division containing the logos -->
+			<div class="requester__form__header__logos">
+				<img src="/logos/suac.png" alt="suac logo" />
 
-		<h1>SUAC Discord Inviter</h1>
+				<!-- Multiplication symbol -->
+				<span>&times;</span>
 
+				<img src="/logos/discord.png" alt="discord logo" />
+			</div>
+
+			<h1>SUAC Discord Inviter</h1>
+		</header>
+
+		<!-- The input for Student ID or imail -->
 		<div class="requester__form__input">
 			<label for="student_id">Student ID or Imail</label>
 			<input type="text" name="student_id" id="student_id" placeholder="" />
@@ -65,7 +73,16 @@
 		<button type="submit">Request Invite</button>
 	</form>
 
-	<!-- TODO: Add noscript tag to check if form submission was successful -->
+	<footer class="requester__footer">
+		Copyright &copy; 2024 Sunway University Anime Club. All rights reserved.
+	</footer>
+
+	<!-- Let user know if form submission was successful if JavaScript is disabled -->
+	{#if form}
+		<noscript>
+			<p style="background-color: {form.valid ? 'darkgreen' : 'darkred'};">{form.message}</p>
+		</noscript>
+	{/if}
 </section>
 
 <style>
@@ -83,6 +100,7 @@
 
 	/* Set the background to fill the screen with an orange gradient */
 	.requester {
+		position: relative;
 		min-height: 100dvh;
 		background: linear-gradient(330deg, var(--primary-clr) 35%, var(--secondary-clr) 100%);
 	}
@@ -107,22 +125,22 @@
 	}
 
 	/* Set the logo size */
-	.requester .requester__form .requester__form__logos img {
+	.requester .requester__form .requester__form__header__logos img {
 		height: auto;
 		width: 5rem;
 		display: inline-block;
 	}
 
 	/* Set the '×' size */
-	.requester .requester__form .requester__form__logos span {
+	.requester .requester__form .requester__form__header__logos span {
 		margin-inline: 1.5rem;
 		font-size: 3rem;
 		font-weight: lighter;
 	}
 
 	/* Align the logos to be centered with each other */
-	.requester .requester__form .requester__form__logos img,
-	.requester .requester__form .requester__form__logos span {
+	.requester .requester__form .requester__form__header__logos img,
+	.requester .requester__form .requester__form__header__logos span {
 		vertical-align: middle;
 	}
 
@@ -192,5 +210,31 @@
 		width: 100%;
 		padding: 0.5rem 1rem;
 		color: hsl(var(--neutralHS), 100%);
+	}
+
+	/* Position the footer to be at the bottom relative to the whole page */
+	.requester .requester__footer {
+		position: absolute;
+		bottom: 0;
+		top: calc(100dvh - 5rem);
+		color: hsla(var(--neutralHS), 100%);
+		filter: drop-shadow(3px 3px 4px hsla(0, 0%, 0%, 0.5));
+		margin: 0 1rem;
+		text-align: center;
+	}
+
+	/* Position the noscript to be at the bottom of the page at all time */
+	noscript {
+		position: fixed;
+		bottom: 0;
+		top: calc(100dvh - 10rem);
+		color: hsl(var(--neutralHS), 100%);
+	}
+
+	/* Put paragraph inside a box */
+	noscript p {
+		margin: 0 1rem;
+		padding: 1rem 2rem;
+		border-radius: 0.2rem;
 	}
 </style>

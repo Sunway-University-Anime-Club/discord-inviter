@@ -22,19 +22,27 @@ const imailSuffix = 'imail.sunway.edu.my';
  * @return {*}  {Promise<boolean>}
  */
 const isRegistered = async (studentId: string): Promise<boolean> => {
-	// Fetch responses from the spreadsheet
-	const response = await service.spreadsheets.values.get({
-		auth: googleClient,
-		spreadsheetId: env.REGISTRATION_FORM_ID,
-		range: 'C:C' // C is the column for student id
-	});
+	const rows: unknown[][] = [];
 
-	// Check if fetch request was successful
-	if (response.status !== 200) return false;
+	// Fetch every registered Student IDs in the list of provided Spreadsheet IDs
+	for (const spreadsheetId of env.REGISTRATION_FORM_IDS.split(',')) {
+		// Fetch responses from the spreadsheet
+		const response = await service.spreadsheets.values.get({
+			auth: googleClient,
+			spreadsheetId,
+			range: 'C:C' // C is the column for student id
+		});
 
-	// Check if there are responses in the spreadsheet
-	const rows = response.data.values;
-	if (!rows?.length) return false;
+		// Check if fetch request was successful
+		if (response.status !== 200) continue;
+
+		// Check if the response has found any data
+		const spreadsheetRow = response.data.values;
+		if (!spreadsheetRow?.length) continue;
+
+		// Push the responses into a global list of rows
+		rows.push(...spreadsheetRow);
+	}
 
 	// Look if there is a match
 	for (const row of rows) {
@@ -67,7 +75,12 @@ const generateInvite = async (minutes: number): Promise<Invite> => {
 };
 
 export const actions = {
-	inviteRequest: async ({ request }): Promise<FormResponse> => {
+	inviteRequest: async ({ request, cookies, url }): Promise<FormResponse> => {
+		// Check if there is a cooldown cookie before continuing
+		// If the cookie expired, then the cookie does not exist and thus can continue
+		const cooldownCookie = cookies.get('cooldown');
+		if (cooldownCookie) return { valid: false, message: 'Invitation request is on cooldown.' };
+
 		// Get the user input from the form submission
 		const formData = await request.formData();
 		const studentId = formData.get('student_id')?.toString() || '';
@@ -101,7 +114,8 @@ export const actions = {
 		const html = render({
 			template: Email,
 			props: {
-				invite: invite.url
+				invite: invite.url,
+				logo: `${url.origin}/logos/suac-large.png`
 			}
 		});
 
@@ -113,9 +127,17 @@ export const actions = {
 			html
 		});
 
+		// Set a cookie that expires as the cooldown
+		cookies.set('cooldown', 'requested', {
+			httpOnly: true,
+			path: '/',
+			maxAge: 10 * 60,
+			secure: false
+		});
+
 		return {
 			valid: true,
-			message: 'You have successfully requested an invited. Check your imail.'
+			message: 'You have successfully requested an invite. Check your imail.'
 		};
 	}
 } satisfies Actions;
