@@ -67,7 +67,7 @@ const generateInvite = async (minutes: number): Promise<Invite> => {
 };
 
 export const actions = {
-	inviteRequest: async ({ request, cookies }): Promise<FormResponse> => {
+	inviteRequest: async ({ request, cookies, url }): Promise<FormResponse> => {
 		// Check if there is a cooldown cookie before continuing
 		// If the cookie expired, then the cookie does not exist and thus can continue
 		const cooldownCookie = cookies.get('cooldown');
@@ -106,7 +106,8 @@ export const actions = {
 		const html = render({
 			template: Email,
 			props: {
-				invite: invite.url
+				invite: invite.url,
+				logo: `${url.origin}/logo/suac-large.png`
 			}
 		});
 
@@ -128,7 +129,7 @@ export const actions = {
 
 		return {
 			valid: true,
-			message: 'You have successfully requested an invited. Check your imail.'
+			message: 'You have successfully requested an invite. Check your imail.'
 		};
 	}
 } satisfies Actions;
