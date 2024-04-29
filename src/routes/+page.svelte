@@ -212,6 +212,7 @@
 		color: hsl(var(--neutralHS), 100%);
 	}
 
+	/* Position the footer to be at the bottom relative to the whole page */
 	.requester .requester__footer {
 		position: absolute;
 		bottom: 0;
