@@ -68,6 +68,8 @@ const generateInvite = async (minutes: number): Promise<Invite> => {
 
 export const actions = {
 	inviteRequest: async ({ request, cookies }): Promise<FormResponse> => {
+		// Check if there is a cooldown cookie before continuing
+		// If the cookie expired, then the cookie does not exist and thus can continue
 		const cooldownCookie = cookies.get('cooldown');
 		if (cooldownCookie) return { valid: false, message: 'Invitation request is on cooldown.' };
 
@@ -116,6 +118,7 @@ export const actions = {
 			html
 		});
 
+		// Set a cookie that expires as the cooldown
 		cookies.set('cooldown', 'requested', {
 			httpOnly: true,
 			path: '/',
