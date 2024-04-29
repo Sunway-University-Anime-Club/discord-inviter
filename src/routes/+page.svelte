@@ -65,7 +65,12 @@
 		<button type="submit">Request Invite</button>
 	</form>
 
-	<!-- TODO: Add noscript tag to check if form submission was successful -->
+	<!-- Let user know if form submission was successful if JavaScript is disabled -->
+	{#if form}
+		<noscript>
+			<p style="background-color: {form.valid ? 'darkgreen' : 'darkred'};">{form.message}</p>
+		</noscript>
+	{/if}
 </section>
 
 <style>
@@ -83,6 +88,7 @@
 
 	/* Set the background to fill the screen with an orange gradient */
 	.requester {
+		position: relative;
 		min-height: 100dvh;
 		background: linear-gradient(330deg, var(--primary-clr) 35%, var(--secondary-clr) 100%);
 	}
@@ -192,5 +198,20 @@
 		width: 100%;
 		padding: 0.5rem 1rem;
 		color: hsl(var(--neutralHS), 100%);
+	}
+
+	/* Position the noscript to be at the bottom of the page at all time */
+	noscript {
+		position: fixed;
+		bottom: 0;
+		top: calc(100dvh - 7.5rem);
+		color: hsl(var(--neutralHS), 100%);
+	}
+
+	/* Put paragraph inside a box */
+	noscript p {
+		margin: 0 1rem;
+		padding: 1rem 2rem;
+		border-radius: 0.2rem;
 	}
 </style>
