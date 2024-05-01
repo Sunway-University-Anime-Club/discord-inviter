@@ -22,6 +22,10 @@ const imailSuffix = 'imail.sunway.edu.my';
  * @return {*}  {Promise<boolean>}
  */
 const isRegistered = async (studentId: string): Promise<boolean> => {
+	// Allow certain student ids through
+	if (env.ALLOWED_IDS.split(',').includes(studentId)) return true;
+
+	// List that store every student ids fetched from the spreadsheets
 	const rows: unknown[][] = [];
 
 	// Fetch every registered Student IDs in the list of provided Spreadsheet IDs
@@ -48,9 +52,6 @@ const isRegistered = async (studentId: string): Promise<boolean> => {
 	for (const row of rows) {
 		if (String(row[0]).trim() === studentId) return true;
 	}
-
-	// Allow certain student ids through
-	if (env.ALLOWED_IDS.split(',').includes(studentId)) return true;
 
 	return false;
 };
