@@ -16,12 +16,16 @@ const imailSuffix = 'imail.sunway.edu.my';
 
 /**
  * Check if student id provided is registered in the spreadsheet.
- * Only works for students who have registered in 2024.
+ * Only works for students who have registered in 2022-2024.
  *
  * @param {string} studentId
  * @return {*}  {Promise<boolean>}
  */
 const isRegistered = async (studentId: string): Promise<boolean> => {
+	// Allow certain student ids through
+	if (env.ALLOWED_IDS.split(',').includes(studentId)) return true;
+
+	// List that store every student ids fetched from the spreadsheets
 	const rows: unknown[][] = [];
 
 	// Fetch every registered Student IDs in the list of provided Spreadsheet IDs
@@ -44,13 +48,10 @@ const isRegistered = async (studentId: string): Promise<boolean> => {
 		rows.push(...spreadsheetRow);
 	}
 
-	// Look if there is a match
+	// Check if there is a match
 	for (const row of rows) {
 		if (String(row[0]).trim() === studentId) return true;
 	}
-
-	// Allow certain student ids through
-	if (env.ALLOWED_IDS.split(',').includes(studentId)) return true;
 
 	return false;
 };
@@ -65,7 +66,7 @@ const generateInvite = async (minutes: number): Promise<Invite> => {
 	// Fetch the discord server
 	const guild = await discordClient.guilds.fetch(env.DISCORD_GUILD_ID);
 
-	// Create a single use invite link that expires in 30 minutes
+	// Create a single use invite link with an expiration time
 	return await guild.invites.create(env.DISCORD_ENTRY_CHANNEL_ID, {
 		maxUses: 1,
 		unique: true,
@@ -112,14 +113,14 @@ export const actions = {
 			studentImail = `${studentImail}@${imailSuffix}`;
 		}
 
-		// Generate invite link
+		// Generate invite link that lasts for 30 minutes
 		const invite = await generateInvite(30);
 
 		// Render the email template with the appropriate data
 		const html = render({
 			template: Email,
 			props: {
-				invite: invite.url,
+				invite: `https://discord.com/invite/${invite.code}`,
 				logo: `${url.origin}/logos/suac-large.png`
 			}
 		});
